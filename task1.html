@@ -4,11 +4,13 @@
     <meta charset="utf-8">
     <title>My Dream</title>
 	<style>
+		
 		.mysite{
 			display: flex; /* включаем режим Flexbox */
 			flex-direction: column; /* дочерние элементы будут располагаться сверху вниз */
+			flex-wrap: wrap;
             text-align:center;
-			padding: 50px 20px;
+			padding: 20px 20px;
 		}
 		.header{
 			background: black;
@@ -17,65 +19,117 @@
 		}
 		.content{
 			display: flex; /* включаем режим Flexbox */
-			flex-direction: row; /* дочерние элементы будут располагаться слева на право */
+			flex-flow: row wrap; /* дочерние элементы будут располагаться слева на право */
+			justify-content: space-around;
             text-align:center;
-          margin-top: 5%;
+            align-items: center;
+            margin-top: 10px;
+			
+			
             
 		}
 		.column{
-			flex: 1; /* столбцы будут иметь одинаковый размер при изменении разрешения */
-            
-          }
-      .description{
-        flex: 1;
-        font-family: Arial, Verdana, "Times New Roman";
-        margin:10%;
-        padding:10px;
-      }
+			
+			flex:1 /* столбцы будут иметь одинаковый размер при изменении разрешения */
+			marging-bottom: 100px;
+        }
+		
+		.column.description{
+			flex: 2;
+			max-height: 100%;
+			font-family: Arial, Verdana, "Times New Roman";
+			font-size: 20px;
+			padding: 10px;
+			
+		}
+		.column.info{
+			flex: 1;
+			flex-direction: column;
+			
+		
+		}
+		.infobox{
+			
+			max-width:200px
+			min-width:100px;
+			padding-left:60px;
+			padding: 10px;
+		}
       .links{
           text-align:left;
-          max-width:200px
-          min-width:100px;
-          padding-left:60px;
       }
-        img{
+        .column.image{
+			flex: 2;
             max-width: 100%;
-            border: 3px black solid;
-            
+         
         }
+      ul{
+        list-style-type: none;
+		padding-inline-start: 0px;
+      }
+      ul li {
+        display: inline;
+      }
+      
+
 		.footer{
-			border: 1px gray solid;	
-            margin-top: 50px;
+			border-top: 1px gray solid;	
+			padding-top:20px;
+			margin-top:99%;
+            flex-direction: column-reserve;
+           
+            font-size:11px;
 		}
+		
 	</style>
 	</head>
 	<body>
 		<div class="mysite">
 			<div class="header"><h1>One World Observatory</h1></div>
 			<div class="content">
-              <div class="column"><img src="https://i.pinimg.com/originals/34/b9/55/34b955ba3d0752894f86a7c42191696b.jpg"></div>
-				<div class="column">
-                  <div class="description">
+              <div class="column image"><img src="https://i.pinimg.com/originals/34/b9/55/34b955ba3d0752894f86a7c42191696b.jpg"></div>
+				<div class="column description">
                     <ul>
                        <li>At the top of the newly constructed One World Trade Center building, One World Observatory is an observation deck offering outstanding views from floors 100, 101, and 102, 1,776 feet above the city.</li><br><br>
                     <li>The elevator to the top is part of the attraction. As you ascend, the surrounding panels show New York as it transformed over the years, from a rural landscape to the metropolis you see today.</li>
                   </ul>
-                    </div>
+                  
                   </div>
-                </div>
-            <div class="content">
-				 <div class="column">
-                   <h2>Reserve Now</h2>
+               
+			<div class="column info">
+				 <div class="infobox">
+                   
                    <fieldset>
                     <legend>Reservation form</legend>
                     <form method="post" action="http://localhost/auth/reserve">
                        <label for="date">Date: </label> <input type="date" name="searchdate" required />
                         <p><label for="mail">Email: </label> <input type="email" name="email"/></p>
+						<p><label for="time">Hours: </label> <input type="range" min=1 max=5 list="hs" name="hoursAmount"/></p>
+						<datalist id="hs">
+							 <option value="1" label="1"></option>
+							 <option value="2" label="2"></option>
+							 <option value="3" label="3"></option>
+							 <option value="4" label="4"></option>
+							  <option value="5" label="5"></option>
+						</datalist>
+						
+						<input type="radio" id="contactChoice1"
+						 name="contact" value="photographer">
+						<label for="contactChoice1">Photographer</label>
+
+						<input type="radio" id="contactChoice2"
+						 name="contact" value="journalist">
+						<label for="contactChoice2">Journalist</label><br>
+
+						<input type="radio" id="contactChoice3"
+						 name="contact" value="visiter">
+						<label for="contactChoice3">Visiter</label>
+						
                         <p><input type="submit" value="Submit" /></p>
                     </form>
                 </fieldset>
                 </div>
-				 <div class="column"><h2>Information</h2>
+				 <div class="infobox">
                    <div class="links">
                    <fieldset>
                      <legend style="text-align: center">
@@ -86,10 +140,20 @@
                      <a href="https://map.mta.info/#@40.70949,-73.97853,14z">NYC Live Subway Map</a>
                    </fieldset>
                     </div>
-                </div>
+					</div>
+			</div>
 			 </div>
            
-			<div class="footer"> <p>© 2021 alexarlord</p></div>
+			<div class="footer">
+              <p>Copyright © 2021 <a href="https://www.apple/ru/" class="dt-footer__link" target="_blank" rel="noopener" data-dt-link-to-exclude="">OneWorldObs.</a> Все права защищены.</p>
+              <ul class="dt-footer__list dt-flex-container">
+            <li class="dt-footer__item"><a href="https://www.apple.com/legal/internet-services/" class="dt-footer__link" target="_blank" rel="noopener" data-dt-link-to-exclude="">Условия пользования интернет-сервисами</a></li>
+            <li class="dt-footer__item"><a href="https://support.apple.com/ru-ru/HT204881" class="dt-footer__link" target="_blank" rel="noopener" data-dt-link-to-exclude="">Apple&nbsp;Music и конфиденциальность</a></li>
+            <li class="dt-footer__item"><a href="https://www.apple.com/legal/privacy/ru/cookies/" class="dt-footer__link" target="_blank" rel="noopener" data-dt-link-to-exclude="">Предупреждение об использовании файлов cookie</a></li>
+            <li class="dt-footer__item"><a href="https://support.apple.com/ru-ru/music" class="dt-footer__link" target="_blank" rel="noopener" data-dt-link-to-exclude="">Служба поддержки</a></li>
+            <li class="dt-footer__item"><a href="https://www.apple.com/feedback/apple-music.html" class="dt-footer__link" target="_blank" rel="noopener" data-dt-link-to-exclude="">Обратная связь</a></li>
+        </ul>
+          </div>
 		</div>
 	</body>
 </html>
