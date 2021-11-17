@@ -20,7 +20,7 @@
 		.content{
 			display: flex; /* включаем режим Flexbox */
 			flex-flow: row wrap; /* дочерние элементы будут располагаться слева на право */
-			justify-content: space-around;
+			justify-content: center;
             text-align:center;
             align-items: center;
             margin-top: 10px;
@@ -29,9 +29,10 @@
             
 		}
 		.column{
-			
+			display: inline-flex;
 			flex:1 /* столбцы будут иметь одинаковый размер при изменении разрешения */
-			marging-bottom: 100px;
+			padding:50px;
+			
         }
 		
 		.column.description{
@@ -45,15 +46,11 @@
 		.column.info{
 			flex: 1;
 			flex-direction: column;
-			
-		
+			width:100%;
 		}
 		.infobox{
-			
-			max-width:200px
-			min-width:100px;
-			padding-left:60px;
-			padding: 10px;
+			margin: 50px;
+			font-size: 20px;
 		}
       .links{
           text-align:left;
@@ -97,9 +94,7 @@
                   </div>
                
 			<div class="column info">
-				 <div class="infobox">
-                   
-                   <fieldset>
+                   <fieldset class="infobox">
                     <legend>Reservation form</legend>
                     <form method="post" action="http://localhost/auth/reserve">
                        <label for="date">Date: </label> <input type="date" name="searchdate" required />
@@ -115,7 +110,7 @@
 						
 						<input type="radio" id="contactChoice1"
 						 name="contact" value="photographer">
-						<label for="contactChoice1">Photographer</label>
+						<label for="contactChoice1">Photographer</label><br>
 
 						<input type="radio" id="contactChoice2"
 						 name="contact" value="journalist">
@@ -128,10 +123,10 @@
                         <p><input type="submit" value="Submit" /></p>
                     </form>
                 </fieldset>
-                </div>
-				 <div class="infobox">
+               
+				
                    <div class="links">
-                   <fieldset>
+                   <fieldset class="infobox">
                      <legend style="text-align: center">
                      Usefull links
                      </legend>
@@ -140,7 +135,7 @@
                      <a href="https://map.mta.info/#@40.70949,-73.97853,14z">NYC Live Subway Map</a>
                    </fieldset>
                     </div>
-					</div>
+					
 			</div>
 			 </div>
            
