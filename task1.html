@@ -30,7 +30,6 @@
 		}
 		.column{
 			display: inline-flex;
-			flex:1;
 			padding:50px;
 			
         }
@@ -50,13 +49,17 @@
 			
 		}
 		.infobox{
-			
 			margin: 50px;
 			font-size: 20px;
+		}
+		.infocontent{
+			text-align:left;
 		}
         .links{
             text-align:left;
         }
+		
+		
         .column.image{
 			flex: 2;
             max-width: 100%;
@@ -70,6 +73,19 @@
 			display: inline;
 		}
       
+		.stocks-selector{
+			display: inline-block;
+		}
+		.stocks-info{
+			display: inline-block;
+		}
+		#trending-stocks{
+			align-items: left;
+			marging-bottom: 20px;
+		}
+		.column.textarea{
+			flex:2;
+		}
 
 		.footer{
 			border-top: 1px gray solid;	
@@ -82,11 +98,14 @@
 		
 	</style>
 	</head>
+	
+	
+		
 	<body>
 		<div class="mysite">
 			<div class="header"><h1>One World Observatory</h1></div>
 			<div class="content">
-              <div class="column image"><img src="https://i.pinimg.com/originals/34/b9/55/34b955ba3d0752894f86a7c42191696b.jpg"></div>
+				<div class="column image"><img src="https://i.pinimg.com/originals/34/b9/55/34b955ba3d0752894f86a7c42191696b.jpg"></div>
 				<div class="column description">
                     <ul>
                        <li>At the top of the newly constructed One World Trade Center building, One World Observatory is an observation deck offering outstanding views from floors 100, 101, and 102, 1,776 feet above the city.</li><br><br>
@@ -94,11 +113,10 @@
                   </ul>
                   
                   </div>
-               
-			<div class="column info">
+				<div class="column info">
                    <fieldset class="infobox">
                     <legend>Reservation form</legend>
-                    <form method="post" action="http://localhost/auth/reserve">
+                    <form class="infocontent" method="post" action="http://localhost/auth/reserve">
 						 <p><label for="mail">Email: </label> <input type="email" name="email" required/></p>
                        <label for="date">Date: </label> <input type="date" name="searchdate" required /><br><br>
 						
@@ -110,7 +128,7 @@
 						</select><br><br>
 					
 
-						
+					<div class="visitChoice">
 						<input type="radio" id="contactChoice1"
 						 name="contact" value="photographer">
 						<label for="contactChoice1">Photographer</label><br>
@@ -125,11 +143,12 @@
 						 <input type="checkbox" id="support" name="support" checked>
 						  <label for="scales">Support</label>
                         <p><input type="submit" value="Submit" /></p>
+					</div>
                     </form>
                 </fieldset>
                
 				
-                   <div class="links">
+                   <div class="infocontent">
                    <fieldset class="infobox">
                      <legend style="text-align: center">
                      Usefull links
@@ -141,7 +160,34 @@
                     </div>
 					
 			</div>
-			 </div>
+			</div>
+			
+			<h1>Trending stocks</h1><br>
+			<div >
+				<div class="">
+					
+					<div>
+						<label for="select">Region</label><br>
+						<select id="select" required>
+							<option>US</option>
+							<option>AU</option>
+							<option>FR</option>
+							<option>DE</option>
+							<option>HK</option>
+						</select><br>
+						<button onclick="getTrendingStocks(event)">Show</button>
+						<div id="trending-stocks">
+							
+						</div>
+					</div>
+					</div>
+					<div >
+						<textarea  class="textarea" rows="10">
+						</textarea>
+					</div>
+					</div>
+			</div>
+			
            
 			<div class="footer">
               <p>Copyright © 2021 <a href="https://www.apple/ru/" class="dt-footer__link" target="_blank" rel="noopener" data-dt-link-to-exclude="">OneWorldObs.</a> Все права защищены.</p>
@@ -154,5 +200,71 @@
         </ul>
           </div>
 		</div>
+		
+	<script>
+			var cntr = document.querySelector("#trending-stocks");
+			var txtr = document.querySelector(".textarea");
+			var region_select = document.querySelector("#select");
+			
+			var request = new XMLHttpRequest();
+			
+			function handlerStocksInfo(){
+				var status = request.status;
+				
+				if (status == 200) {
+					//Десериализуем результат запроса из строки в объект  
+					var companiesinf = JSON.parse(request.responseText);
+					var quotes = companiesinf.finance.result[0].quotes;
+					console.log(companiesinf.finance.result[0].quotes);
+					for (var i = 0; i < 20; i++) {
+					var btn = document.createElement('button');
+					btn.id = quotes[i].symbol;
+					var btntxt = document.createTextNode(quotes[i].symbol);
+					btn.appendChild(btntxt);
+					
+					btn.addEventListener('click', GetSctockInfo)
+					cntr.appendChild(btn);
+					
+					console.log(i);
+			  }
+				} else {
+					console.log(request.statusText);
+				}
+			}
+			
+			function stocksTrendingGetAll(region){
+				var queryParam = encodeURIComponent(region);
+				request.open('GET', 'https://yfapi.net/v1/finance/trending/' + queryParam);	
+				request.setRequestHeader('accept', 'application/json');
+				request.setRequestHeader('X-API-KEY', 'vG7N5zRjGy80YrVwCug5L9uchVZmi9v92M6ifHZ3');
+			
+				request.onload = handlerStocksInfo;
+				
+				
+				request.send();
+				
+			}
+			
+			function GetSctockInfo(){
+				txtr.textContent = this.id;
+				console.log("clicked: "+this.id);
+			}
+			
+			function getTrendingStocks(event){
+				if (cntr.childElementCount > 0){
+					//stocksTrendingGetAll(region_select.value);
+					console.log("updating elements");
+				}
+				else{
+				stocksTrendingGetAll(region_select.value);
+				
+			  txtr.value = request.statusText;
+			  }
+			}
+			
+			
+			
+	</script>
+
 	</body>
 </html>
