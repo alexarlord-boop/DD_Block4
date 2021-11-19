@@ -1,5 +1,5 @@
 var cntr = document.querySelector(".trending-stocks");  //container for buttons
-var txtr = document.querySelector(".textarea");         //block for qoute content
+var txtr = document.querySelector(".textarea");         //block for quote content
 var region_select = document.querySelector(".select");  //select tag with user's choice of region 
 
 
