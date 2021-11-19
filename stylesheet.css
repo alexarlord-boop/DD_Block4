@@ -77,6 +77,8 @@ ul li {
 	display: flex;
 	flex-direction: row;
 	width: 200px;
+	justify-content: left;
+
 	flex-wrap: wrap;
 	margin: 20px;
 }
