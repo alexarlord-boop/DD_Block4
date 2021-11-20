@@ -9,6 +9,7 @@
 
 <body>
 	<div class="mysite">
+
 		<div class="header">
 			<h1>One World Observatory</h1></div>
 		<div class="content">
@@ -21,45 +22,11 @@
 				</ul>
 			</div>
 			<div class="column info">
-				<fieldset class="infobox">
-					<legend>Reservation form</legend>
-					<form class="infocontent" method="post" action="http://localhost/auth/reserve">
-						<p>
-							<label for="email">Email: </label>
-							<input type="email" id="email" required/>
-						</p>
-						<label for="searchdate">Date: </label>
-						<input type="date" id="searchdate" required />
-						<br>
-						<br>
-						<label for="select">Hours</label>
-						<br>
-						<select id="select" required>
-							<option value="1" id="11">1</option>
-							<option id="12">2</option>
-							<option id="13">3</option>
-						</select>
-						<br>
-						<br>
-						<div class="visitChoice">
-							<input type="radio" id="contactChoice1" name="contact" value="photographer">
-							<label for="contactChoice1">Photographer</label>
-							<br>
-							<input type="radio" id="contactChoice2" name="contact" value="journalist">
-							<label for="contactChoice2">Journalist</label>
-							<br>
-							<input type="radio" id="contactChoice3" name="contact" value="visiter">
-							<label for="contactChoice3">Visiter</label>
-							<br>
-							<input type="checkbox" id="support" name="support" checked>
-							<label for="support">Support</label>
-							<p>
-								<input type="submit" value="Submit" />
-							</p>
-						</div>
-					</form>
-				</fieldset>
+			
+				<div id="root"></div>
+				
 				<div class="infocontent">
+
 					<fieldset class="infobox">
 						<legend style="text-align: center"> Usefull links </legend> <a href=" https://www.planetware.com/tourist-attractions-/new-york-city-us-ny-nyc.htm">Tourists' points of interest</a>
 						<br>
@@ -93,6 +60,8 @@
 			<textarea readonly class="textarea" cols=130 rows=10></textarea>
 		</div>
 	</div>
+	
+	
 	<div class="footer">
 		<p>Copyright © 2021 <a href="https://www.apple/ru/" class="dt-footer__link" target="_blank" rel="noopener" data-dt-link-to-exclude="">OneWorldObs.</a> Все права защищены.</p>
 		<ul class="dt-footer__list dt-flex-container">
@@ -103,8 +72,114 @@
 			<li class="dt-footer__item"><a href="#" class="dt-footer__link" target="_blank" rel="noopener" data-dt-link-to-exclude="">Обратная связь</a></li>
 		</ul>
 	</div>
-	
 	<script src="src.js"></script>
+	
+	<!-- React -->
+	<script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+	<script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.25.0/babel.min.js"></script>		 
+	<script type="text/babel">
+			
+			class ManagedForm extends React.Component {
+				constructor(props){
+					super(props);
+				
+					this.state = { email: '', date: '',
+								   hours: '1', visitertype: 'visiter',
+								   needsupport: true};   
+					
+					this.handleEmailChange = this.handleEmailChange.bind(this);
+					this.handleDateChange  = this.handleDateChange.bind(this);
+					this.handleHoursChange = this.handleHoursChange.bind(this);
+					this.handleRadioChange = this.handleRadioChange.bind(this);
+					this.handleCheckChange = this.handleCheckChange.bind(this);
+					
+					this.handleSubmit = this.handleSubmit.bind(this);
+					
+				}
+				
+				handleSubmit(event){
+					alert('Вы ввели: ' + this.state.email +', '+ this.state.date +', ' + this.state.hours +', '+ this.state.visitertype +', '+ this.state.needsupport);
+					event.preventDefault();
+				}
+				
+				handleEmailChange(event){
+					console.log('старое значение email: ' + this.state.email + '  новое значение: ' + event.target.value);
+					this.setState({ email: event.target.value });	
+				}
+				
+				handleDateChange(event){
+					console.log('старое значение date: ' + this.state.date + '  новое значение: ' + event.target.value);
+					this.setState({ date: event.target.value });	
+				}
+				
+				handleHoursChange(event){
+					console.log('старое значение hours: ' + this.state.hours + '  новое значение: ' + event.target.value);
+					this.setState({ hours: event.target.value });
+				}
+				
+				handleRadioChange(event){
+					console.log('старое значение visitertype: ' + this.state.visitertype + '  новое значение: ' + event.target.value);
+					this.setState({ visitertype: event.currentTarget.value });
+				}
+				
+				handleCheckChange(event){
+					console.log('старое значение needsupport: ' + this.state.needsupport + '  новое значение: ' + event.target.checked);
+					this.setState({ needsupport: event.target.checked });
+				}
+				
+				render() {
+					return (
+						<div className='managed'>
+						<fieldset class="infobox">
+							<legend>Reservation form</legend>
+							<form onSubmit={this.handleSubmit} class="infocontent" >
+								<p>
+									<label for="email">Email: </label>
+									<input type="email" id="email" value={this.state.email} onChange={this.handleEmailChange} required />
+								</p>
+								
+								<label for="searchdate">Date: </label>
+								<input type="date" id="searchdate" value={this.state.date} onChange={this.handleDateChange} required />
+								<br/>
+								<br/>
+								<label for="select">Hours</label>
+								<br/>
+								<select id="select" value={this.state.hours} onChange={this.handleHoursChange} required>
+									<option value="1" id="11">1</option>
+									<option id="12">2</option>
+									<option id="13">3</option>
+								</select>
+								<br/>
+								<br/>
+								
+								<div class="visitChoice">
+									<input type="radio" id="contactChoice1" name="contact" value="photographer" checked={this.state.visitertype === "photographer"} onChange={this.handleRadioChange}/>
+									<label for="contactChoice1">Photographer</label>
+									<br/>
+									<input type="radio" id="contactChoice2" name="contact" value="journalist" checked={this.state.visitertype === "journalist"} onChange={this.handleRadioChange} />
+									<label for="contactChoice2">Journalist</label>
+									<br/>
+									<input type="radio" id="contactChoice3" name="contact" value="visiter" checked={this.state.visitertype === "visiter"} onChange={this.handleRadioChange} />
+									<label for="contactChoice3">Visiter</label>
+									<br/>
+									<input type="checkbox" id="support" name="support" checked={this.state.needsupport} onChange={this.handleCheckChange} />
+									<label for="support">Support</label>
+									<p>
+										<input type="submit" value="Submit" />
+									</p>
+								</div>
+							</form>
+						</fieldset>
+						</div>
+					);
+						
+				}
+			}
+
+			ReactDOM.render(<ManagedForm />, document.getElementById("root"))
+
+		</script>
 </body>
 
 </html>
